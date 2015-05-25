@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TW_Project
 {
-	struct vector
+	public struct vector
 	{
 		public vector(float x = 0.0f, float y = 0.0f)
 			: this()

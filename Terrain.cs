@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,7 +9,7 @@ namespace TW_Project
 {
 	public class Terrain
 	{
-		public char[,] field;
+		private char[,] field;
 
 		public void Draw()
 		{
@@ -71,8 +72,12 @@ namespace TW_Project
 			}
 		}
 
-		void LoadFromFile(string fileName)
+		public void LoadFromFile(string fileName)
 		{
+			// 4etene ot faila
+			using (var file = new StreamReader(fileName))
+			{
+			}
 		}
 	}
 }
