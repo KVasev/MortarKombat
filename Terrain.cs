@@ -72,12 +72,45 @@ namespace TW_Project
 			}
 		}
 
-		public void LoadFromFile(string fileName)
-		{
-			// 4etene ot faila
-			using (var file = new StreamReader(fileName))
-			{
-			}
-		}
+        public void LoadFromFile(string fileName)
+        {
+            // 4etene ot faila
+            try
+            {
+                StreamReader reader = new StreamReader(RandomTerrain(fileName,0, 9));
+                field = new char[1, 1];
+                try
+                {
+                    using (reader)
+                    {
+                        int[] terrainSize = reader.ReadLine().Split(' ').Select(int.Parse).ToArray();
+                        field = new char[terrainSize[0], terrainSize[1]];
+                        for (int rows = 0; rows < 50; rows++)
+                        {
+                            for (int cols = 0; cols < 150; cols++)
+                            {
+                                field[rows, cols] = (char)reader.Read();
+                            }
+                        }
+                    }
+                }
+                finally
+                {
+                    reader.Close();
+                }
+            }
+            catch(FileNotFoundException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+        static string RandomTerrain(string fileName, int min, int max)
+        {
+            Random rnd = new Random();
+            int number = rnd.Next(min, max);
+
+
+            return fileName + number + ".txt";
+        }
 	}
 }

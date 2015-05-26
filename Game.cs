@@ -121,13 +121,58 @@ namespace TW_Project
 			int shotsLeft = 8;
 
 			float angle = 45.0f;
-			int shotForce = 3;
+			float shotForce = 5.0f;
 
 			while (shotsLeft > 0)
-			{
-				Thread.Sleep(1000);
-
-				// TODO: da se vzeme vhoda za sledva6tiq iztrel
+			{                
+                bool shotInput = false;
+                ConsoleKeyInfo key;
+                while (!shotInput)
+                {
+                    key = Console.ReadKey(false);
+                    switch (key.Key)
+                    {
+                        case ConsoleKey.UpArrow:
+                            if (angle<85)
+                            {
+                                angle += 0.5f;
+                            }
+                            break;
+                        case ConsoleKey.LeftArrow:
+							if (shotForce >= 1.0f)
+							{
+								shotForce -= 0.5f;
+							}
+                            break;
+                        case ConsoleKey.RightArrow:
+							if (shotForce <= 9.5f)
+							{
+								shotForce += 0.5f;
+							}
+                            break;
+                        case ConsoleKey.DownArrow:
+                            if (angle>5)
+                            {
+								angle -= 0.5f;
+                            }
+                            break;
+                        case ConsoleKey.Spacebar:
+                            shotInput = true;
+                            break;
+                    }
+                    while (Console.KeyAvailable) Console.ReadKey(false);
+					Console.SetCursorPosition(0, 0 + terrainOffset);
+					Console.WriteLine(shotForce);
+					Console.SetCursorPosition(0, 1 + terrainOffset);
+					Console.WriteLine(angle);
+					Console.SetCursorPosition(0, 2 + terrainOffset);
+					Console.WriteLine("Shots left:{0}", shotsLeft);
+					Thread.Sleep(50);
+                }
+				
+                
+                
+                // TODO: da se vzeme vhoda za sledva6tiq iztrel
 				// da se izbira snarqd i da se promenq skorosta(velocity)
 				int windForce = 5;
 				var currentShell = shells[0];
@@ -148,7 +193,7 @@ namespace TW_Project
 					Thread.Sleep(20);
 				}
 
-				angle += 15.0f;// DEBUG
+				//angle += 15.0f;// DEBUG
 				--shotsLeft;
 			}
 		}
