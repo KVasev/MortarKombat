@@ -17,10 +17,19 @@ namespace TW_Project
 			{
 				for (int j = 0; j < field.GetLength(1); ++j)
 				{
+					if (field[i, j] == '#')
+					{
+						Console.ForegroundColor = ConsoleColor.Green;
+					}
+					else
+					{
+						Console.ForegroundColor = ConsoleColor.White;
+					}
 					Console.Write(field[i, j]);
 				}
-				Console.WriteLine();
+				//Console.WriteLine();//nqma nujda
 			}
+			Console.ResetColor();
 		}
 
 		public char GetBlock(int x, int y)
@@ -55,9 +64,9 @@ namespace TW_Project
 			}
 		}
 
-		public void StartTestLVL()
+		public void StartTestLVL(int width, int height)
 		{
-			field = new char[16, 70];
+			field = new char[height, width];
 			for (int i = 0; i < field.GetLength(0); ++i)
 			{
 				field[i, 25] = '#';
@@ -72,45 +81,45 @@ namespace TW_Project
 			}
 		}
 
-        public void LoadFromFile(string fileName)
-        {
-            // 4etene ot faila
-            try
-            {
-                StreamReader reader = new StreamReader(RandomTerrain(fileName,0, 9));
-                field = new char[1, 1];
-                try
-                {
-                    using (reader)
-                    {
-                        int[] terrainSize = reader.ReadLine().Split(' ').Select(int.Parse).ToArray();
-                        field = new char[terrainSize[0], terrainSize[1]];
-                        for (int rows = 0; rows < 50; rows++)
-                        {
-                            for (int cols = 0; cols < 150; cols++)
-                            {
-                                field[rows, cols] = (char)reader.Read();
-                            }
-                        }
-                    }
-                }
-                finally
-                {
-                    reader.Close();
-                }
-            }
-            catch(FileNotFoundException ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-        }
-        static string RandomTerrain(string fileName, int min, int max)
-        {
-            Random rnd = new Random();
-            int number = rnd.Next(min, max);
+		public void LoadFromFile(string fileName)
+		{
+			// 4etene ot faila
+			try
+			{
+				StreamReader reader = new StreamReader(RandomTerrain(fileName, 0, 9));
+				field = new char[1, 1];
+				try
+				{
+					using (reader)
+					{
+						int[] terrainSize = reader.ReadLine().Split(' ').Select(int.Parse).ToArray();
+						field = new char[terrainSize[0], terrainSize[1]];
+						for (int rows = 0; rows < 50; rows++)
+						{
+							for (int cols = 0; cols < 150; cols++)
+							{
+								field[rows, cols] = (char)reader.Read();
+							}
+						}
+					}
+				}
+				finally
+				{
+					reader.Close();
+				}
+			}
+			catch (FileNotFoundException ex)
+			{
+				Console.WriteLine(ex.Message);
+			}
+		}
+		static string RandomTerrain(string fileName, int min, int max)
+		{
+			Random rnd = new Random();
+			int number = rnd.Next(min, max);
 
 
-            return fileName + number + ".txt";
-        }
+			return fileName + number + ".txt";
+		}
 	}
 }

@@ -19,20 +19,11 @@ namespace TW_Project
 		public char c;
 		public vector position;
 		public vector lastPosition;
-	}
 
-	public static class ShellLoader
-	{
-		public static List<Shell> Load(string fileName)
+		public Shell(char symbol)
+			: this()
 		{
-			List<Shell> toReturn = new List<Shell>();
-
-			// 4etene ot faila
-			using (var file = new StreamReader(fileName))
-			{
-			}
-
-			return toReturn;
+			c = symbol;
 		}
 	}
 }

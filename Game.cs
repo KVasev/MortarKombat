@@ -9,7 +9,7 @@ namespace TW_Project
 {
 	public class Game
 	{
-		private void DrawShellAndParabola(Shell shell, char trail, int terrainWidth)
+		private void DrawShellAndParabola(ref Shell shell, char trail, int terrainWidth)
 		{
 			Console.SetCursorPosition((int)shell.lastPosition.X, (int)shell.lastPosition.Y);
 			Console.Write(trail);
@@ -108,11 +108,11 @@ namespace TW_Project
 			return false;
 		}
 
-		public void NewGame(List<Shell> shells, Terrain terrain)
+		public void NewGame(Shell[] shells, Terrain terrain, int height)
 		{
 			const double toRad = Math.PI / 180.0;
 			float deltaTime = 0.1f, time;
-			int terrainOffset = 45;
+			int terrainOffset = height - terrain.GetHeight() - 1;
 
 			vector pos = new vector(0, 8 + terrainOffset),
 				velocity = new vector(5, -5);
@@ -123,64 +123,82 @@ namespace TW_Project
 			float angle = 45.0f;
 			float shotForce = 5.0f;
 
+			Random rnd = new Random();
+
+			string emptyString = new string(' ', terrainOffset * terrain.GetWidth());
 			while (shotsLeft > 0)
-			{                
-                bool shotInput = false;
-                ConsoleKeyInfo key;
-                while (!shotInput)
-                {
-                    key = Console.ReadKey(false);
-                    switch (key.Key)
-                    {
-                        case ConsoleKey.UpArrow:
-                            if (angle<85)
-                            {
-                                angle += 0.5f;
-                            }
-                            break;
-                        case ConsoleKey.LeftArrow:
+			{
+				// TODO: da se vzeme vhoda za sledva6tiq iztrel
+				// da se izbira snarqd i da se promenq skorosta(velocity)
+				int windForce = rnd.Next(-5, 6);
+				var currentShell = shells[0];
+				currentShell.lastPosition = pos;
+
+				//Console.Clear();// ako cqloto pole e v masiv i ne se vika clear ne premigva ?
+				//Console.SetCursorPosition(0, terrainOffset);
+				Console.SetCursorPosition(0, 0);
+				Console.Write(emptyString);
+				terrain.Draw();
+
+				bool shotInput = false;
+				ConsoleKeyInfo key;
+				while (!shotInput)
+				{
+					Console.SetCursorPosition(0, height - 1);
+					Console.Write(new string(' ', terrain.GetWidth() - 1));
+
+					Console.SetCursorPosition(0, height - 1);
+					Console.Write("Shot force: {0}", shotForce);
+					Console.SetCursorPosition(15, height - 1);
+					Console.Write("Shot angle: {0}", angle);
+					Console.SetCursorPosition(35, height - 1);
+					Console.Write("Shots left: {0}", shotsLeft);
+
+					key = Console.ReadKey(false);
+					switch (key.Key)
+					{
+						case ConsoleKey.UpArrow:
+							if (angle < 85)
+							{
+								angle += 0.5f;
+							}
+							break;
+						case ConsoleKey.LeftArrow:
 							if (shotForce >= 1.0f)
 							{
 								shotForce -= 0.5f;
 							}
-                            break;
-                        case ConsoleKey.RightArrow:
+							break;
+						case ConsoleKey.RightArrow:
 							if (shotForce <= 9.5f)
 							{
 								shotForce += 0.5f;
 							}
-                            break;
-                        case ConsoleKey.DownArrow:
-                            if (angle>5)
-                            {
+							break;
+						case ConsoleKey.DownArrow:
+							if (angle > 5)
+							{
 								angle -= 0.5f;
-                            }
-                            break;
-                        case ConsoleKey.Spacebar:
-                            shotInput = true;
-                            break;
-                    }
-                    while (Console.KeyAvailable) Console.ReadKey(false);
-					Console.SetCursorPosition(0, 0 + terrainOffset);
-					Console.WriteLine(shotForce);
-					Console.SetCursorPosition(0, 1 + terrainOffset);
-					Console.WriteLine(angle);
-					Console.SetCursorPosition(0, 2 + terrainOffset);
-					Console.WriteLine("Shots left:{0}", shotsLeft);
-					Thread.Sleep(50);
-                }
-				
-                
-                
-                // TODO: da se vzeme vhoda za sledva6tiq iztrel
-				// da se izbira snarqd i da se promenq skorosta(velocity)
-				int windForce = 5;
-				var currentShell = shells[0];
-				currentShell.lastPosition = pos;
+							}
+							break;
+						case ConsoleKey.Spacebar:
+							shotInput = true;
+							break;
+					}
+					while (Console.KeyAvailable) Console.ReadKey(false);
 
-				Console.Clear();// ako cqloto pole e v masiv i ne se vika clear ne premigva ?
-				Console.SetCursorPosition(0, terrainOffset);
-				terrain.Draw();
+					//Console.SetCursorPosition(0, height - 1);
+					//Console.Write(new string(' ', terrain.GetWidth() - 1));
+
+					//Console.SetCursorPosition(0, height - 1);
+					//Console.Write("Shot force: {0}", shotForce);
+					//Console.SetCursorPosition(15, height - 1);
+					//Console.Write("Shot angle: {0}", angle);
+					//Console.SetCursorPosition(35, height - 1);
+					//Console.Write("Shots left: {0}", shotsLeft);
+
+					Thread.Sleep(50);
+				}
 
 				velocity.X = (float)Math.Cos(angle * toRad) * (shotForce + windForce);
 				velocity.Y = -(float)Math.Sin(angle * toRad) * (shotForce + windForce);
@@ -188,7 +206,7 @@ namespace TW_Project
 				time = 0;
 				while (!TerrainCollisionDetection(time, pos, velocity, terrainOffset, ref currentShell, ref terrain))
 				{
-					DrawShellAndParabola(currentShell, trail, terrain.GetWidth());
+					DrawShellAndParabola(ref currentShell, trail, terrain.GetWidth());
 					time += deltaTime;
 					Thread.Sleep(20);
 				}
