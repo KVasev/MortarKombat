@@ -12,23 +12,36 @@ namespace TW_Project
 	{
 		static void Main(string[] args)
 		{
-			//var shells = ShellLoader.Load("filename");
-			var shells = new List<Shell>();
-			// da se zaredqt snarqdite ( moje i masiv a ne list da se polzva )
-			Shell shell = new Shell();
-			shell.c = '@';
-			shells.Add(shell);
-			shell.c = 'o';
-			shells.Add(shell);
+			int width = 150, height = 50;
+			int savedWidth = Console.WindowWidth, savedHeight = Console.WindowHeight,
+				savedBufferWidth = Console.WindowWidth, savedBufferHeight = Console.WindowHeight;
 
-			Terrain terrain = new Terrain();
-			//terrain.LoadFromFile("filename");
-			terrain.StartTestLVL();
+			var shells = new Shell[]
+			{
+				new Shell( '@' ),
+				new Shell( 'o' ),
+				new Shell( 'O' )
+			};
 
-			// TODO: da se dobavi menu
-			// podava se samo 1 teren
-			Game game = new Game();
-			game.NewGame(shells, terrain);
+			try
+			{
+				Console.SetWindowSize(width, height);
+				Console.SetBufferSize(width, height);
+				Terrain terrain = new Terrain();
+				//terrain.LoadFromFile("filename");
+				terrain.StartTestLVL(width, 15);
+
+				// TODO: da se dobavi menu
+				// podava se samo 1 teren
+				Game game = new Game();
+				game.NewGame(shells, terrain, height);
+			}
+			finally
+			{
+				Console.ResetColor();
+				Console.SetWindowSize(savedWidth, savedHeight);
+				Console.SetBufferSize(savedBufferWidth, savedBufferHeight);
+			}
 		}
 	}
 }
