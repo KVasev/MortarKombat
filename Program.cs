@@ -16,25 +16,13 @@ namespace TW_Project
 			int savedWidth = Console.WindowWidth, savedHeight = Console.WindowHeight,
 				savedBufferWidth = Console.WindowWidth, savedBufferHeight = Console.WindowHeight;
 
-			var shells = new Shell[]
-			{
-				new Shell( '@' ),
-				new Shell( 'o' ),
-				new Shell( 'O' )
-			};
-
 			try
 			{
 				Console.SetWindowSize(width, height);
 				Console.SetBufferSize(width, height);
-				Terrain terrain = new Terrain();
-				//terrain.LoadFromFile("filename");
-				terrain.StartTestLVL(width, 15);
 
-				// TODO: da se dobavi menu
-				// podava se samo 1 teren
-				Game game = new Game();
-				game.NewGame(shells, terrain, height);
+				var menu = new Menu();
+				menu.Start(width, height);
 			}
 			finally
 			{

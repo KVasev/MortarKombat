@@ -19,11 +19,21 @@ namespace TW_Project
 		public char c;
 		public vector position;
 		public vector lastPosition;
+		public vector velocity;
 
 		public Shell(char symbol)
 			: this()
 		{
 			c = symbol;
+		}
+
+		public Shell(char symbol, vector pos, vector lastPos, vector vel)
+			: this()
+		{
+			c = symbol;
+			position = pos;
+			lastPosition = lastPos;
+			velocity = vel;
 		}
 	}
 }
