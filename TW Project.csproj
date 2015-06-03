@@ -41,13 +41,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Game.cs" />
-    <Compile Include="Menu.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="source\Game.cs" />
+    <Compile Include="source\Menu.cs" />
+    <Compile Include="source\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Shell.cs" />
-    <Compile Include="Terrain.cs" />
-    <Compile Include="vector.cs" />
+    <Compile Include="source\Shell.cs" />
+    <Compile Include="source\Terrain.cs" />
+    <Compile Include="source\vector.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

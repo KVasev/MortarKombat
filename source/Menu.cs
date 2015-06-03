@@ -9,6 +9,14 @@ namespace TW_Project
 {
 	public class Menu
 	{
+		const string helpString =
+			@"<<<HELP>>>
+Your objective is to destroy the evil illuminati triangle. Ammo is scarce and every bit counts , so aim carefully!
+Use the UP and DOWN arrows to adjust the angle of the shot, and the LEFT and RIGHT arrows to adjust the power of the shot.
+Press spacebar to shoot.
+Every round the power and the direction of the wind changes.
+There are 3 types of ammo - light , heavy and frag.
+Good luck! Don't let the illuminati win!";
 		private string[] menuScreen = new string[50];
 		private void Draw()
 		{
@@ -30,7 +38,34 @@ namespace TW_Project
 				this.text = text;
 			}
 		}
+		private void PrintHelp()
+		{
+			Console.WriteLine(helpString);
+			Console.WriteLine("Press any key to go back...");
+			while (!Console.KeyAvailable) ;
+			while (Console.KeyAvailable) Console.ReadKey(true);
+		}
 
+	    void PrintMenu(item[] items,int menuCursorPosition)
+	    {
+            for (int i = 0; i <= 3; i++)
+            {
+                if (i == menuCursorPosition)
+                {
+                    Console.SetCursorPosition(items[i].x, items[i].y);
+                    Console.BackgroundColor = ConsoleColor.Yellow;
+                    Console.ForegroundColor = ConsoleColor.Black;
+                    Console.Write(items[i].text);
+                }
+                else
+                {
+                    Console.SetCursorPosition(items[i].x, items[i].y);
+                    Console.BackgroundColor = ConsoleColor.Black;
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.Write(items[i].text);
+                }
+            }
+	    }
 		public void Start(int width, int height)
 		{
 			var shells = new Shell[]
@@ -56,6 +91,7 @@ namespace TW_Project
 				new item(128, 32, "EXIT")
 			};
 
+		    PrintMenu(items, menuCursorPosition);
 			bool selectedButton = false;
 			bool quit = false;
 			ConsoleKeyInfo keyMenu;
@@ -92,13 +128,14 @@ namespace TW_Project
 					switch (menuCursorPosition)
 					{
 						case 0:
-							//terrain.LoadFromFile("filename");
-							terrain.StartTestLVL(width, 15);
+							terrain.LoadFromFile("../../terrain-levels/map");
+							//terrain.StartTestLVL(width, 15);
 
 							game.NewGame(shells, terrain, height);
 							Console.Clear();
 							break;
 						case 1:
+							PrintHelp();
 							break;
 						case 2:
 							break;
@@ -109,23 +146,7 @@ namespace TW_Project
 					Console.SetCursorPosition(0, 0);
 					Draw();
 				}
-				for (int i = 0; i <= 3; i++)
-				{
-					if (i == menuCursorPosition)
-					{
-						Console.SetCursorPosition(items[i].x, items[i].y);
-						Console.BackgroundColor = ConsoleColor.Yellow;
-						Console.ForegroundColor = ConsoleColor.Black;
-						Console.Write(items[i].text);
-					}
-					else
-					{
-						Console.SetCursorPosition(items[i].x, items[i].y);
-						Console.BackgroundColor = ConsoleColor.Black;
-						Console.ForegroundColor = ConsoleColor.White;
-						Console.Write(items[i].text);
-					}
-				}
+                PrintMenu(items, menuCursorPosition);
 				while (Console.KeyAvailable) Console.ReadKey(true);
 			}
 			Console.ResetColor();

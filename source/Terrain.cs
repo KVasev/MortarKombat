@@ -86,17 +86,16 @@ namespace TW_Project
 			// 4etene ot faila
 			try
 			{
-				StreamReader reader = new StreamReader(RandomTerrain(fileName, 0, 9));
-				field = new char[1, 1];
+				StreamReader reader = new StreamReader(RandomTerrain(fileName, 1,6));
+				field = new char[15, 150];
 				try
 				{
 					using (reader)
 					{
-						int[] terrainSize = reader.ReadLine().Split(' ').Select(int.Parse).ToArray();
-						field = new char[terrainSize[0], terrainSize[1]];
-						for (int rows = 0; rows < 50; rows++)
+						//field = new char[15, 150];
+						for (int rows = 0; rows < field.GetLength(0); rows++)
 						{
-							for (int cols = 0; cols < 150; cols++)
+							for (int cols = 0; cols < field.GetLength(1); cols++)
 							{
 								field[rows, cols] = (char)reader.Read();
 							}

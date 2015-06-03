@@ -126,7 +126,7 @@ namespace TW_Project
 			int terrainOffset = height - terrain.GetHeight() - 1;
 			quitGame = false;
 
-			vector pos = new vector(0, 8 + terrainOffset);
+			vector pos = new vector(0, 4 + terrainOffset);
 			//velocity = new vector(5, -5);
 
 			int shotsLeft = 8,
